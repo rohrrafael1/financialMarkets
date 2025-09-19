@@ -67,14 +67,14 @@ def negative_sharpe(weights, mean_returns, cov_matrix, risk_free=0.0381):
 constraints = [
     {'type': 'eq', 'fun': lambda w: np.sum(w) - 1},
 
-    {'type': 'ineq', 'fun': lambda w: np.sum(w[groups['usStocks']]) - 0.50},  # At least 20% in Equities
-    {'type': 'ineq', 'fun': lambda w: 0.90 - np.sum(w[groups['usStocks']])},  # At most 70% in Safes
+    {'type': 'ineq', 'fun': lambda w: np.sum(w[groups['usStocks']]) - 0.50},  # At least 50% in usStocks
+    {'type': 'ineq', 'fun': lambda w: 0.90 - np.sum(w[groups['usStocks']])},  # At most 90% in usStocks
 
-    {'type': 'ineq', 'fun': lambda w: np.sum(w[groups['Emerging']]) - 0.10},  # At least 20% in Equities
-    {'type': 'ineq', 'fun': lambda w: 0.45 - np.sum(w[groups['Emerging']])},  # At most 70% in Safes
+    {'type': 'ineq', 'fun': lambda w: np.sum(w[groups['Emerging']]) - 0.10},  # At least 10% in Emerging
+    {'type': 'ineq', 'fun': lambda w: 0.45 - np.sum(w[groups['Emerging']])},  # At most 45% in Emerging
     
-    {'type': 'ineq', 'fun': lambda w: np.sum(w[groups['Safety']]) - 0.01},  # At least 20% in Equities
-    {'type': 'ineq', 'fun': lambda w: 0.073 - np.sum(w[groups['Safety']])},  # At most 70% in Safes
+    {'type': 'ineq', 'fun': lambda w: np.sum(w[groups['Safety']]) - 0.01},  # At least 1% in Safety
+    {'type': 'ineq', 'fun': lambda w: 0.073 - np.sum(w[groups['Safety']])},  # At most 7.3% in Safety
 ]
 
 bounds = [
@@ -122,7 +122,7 @@ initial_guess = np.ones(n_assets) / n_assets
 result = minimize(
     negative_sharpe,
     initial_guess,
-    args=(expected_returns, cov_matrix, 0.0381),  # assume 2% risk-free rate
+    args=(expected_returns, cov_matrix, 0.0381),  # assume 3.81% risk-free rate
     method='SLSQP',
     bounds=bounds,
     constraints=constraints
@@ -138,4 +138,5 @@ sharpe = (opt_return - 0.0381) / opt_vol
 print("Optimal weights:", np.round(opt_weights, 3))
 print(f"Expected return: {opt_return:.2%}")
 print(f"Volatility: {opt_vol:.2%}")
+
 print(f"Sharpe ratio: {sharpe:.2f}")
