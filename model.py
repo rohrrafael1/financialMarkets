@@ -4,11 +4,10 @@ from scipy.optimize import minimize
 # -----------------------------
 # 1. User inputs
 # -----------------------------
-# Example: 3 assets
 expected_returns = np.array([0.0605, 0.041, 0.0707, 0.0876, 0.062, 0.0419, 0.0412, 0.037, 0.0419, 0.0587, 0.0459, 0.045, 0.042, 0.05, 0.0625, 0.0822, 0.0573, 0.0697, 0.1002, 0.0870, 0.045, 0.0381])   # expected annual returns
 vols = np.array([0.2137, 0.2163, 0.1898, 0.2321, 0.1829, 0.0482, 0.0501, 0.1209, 0.0576, 0.0633, 0.0537, 0.0528, 0.0360, 0.4000, 0.1563, 0.1471, 0.1140, 0.1834, 0.2586, 0.0754, 0.1700, 0.001])              # annual volatilities (std devs)
 
-# FIX THIS: Define asset groups for constraints
+#Define asset groups for constraints
 groups = {
     # Gold = 14, Bonds = 6
     # EEM = 3, IGF = 15
@@ -79,37 +78,22 @@ constraints = [
 
 bounds = [
     (0.407, 0.55),  # US large & med cap equities
-
     (0.00, 0),  # US small cap equities
-
     (0.00, 0),  # Europe large cap equities
-
     (0.024, 1),  # Emerging large cap equities
-
     (0.00, 0),  # Global large cap equities
-
     (0.00, 0),  # US aggregate bonds
-
     (0.0175, 1),  # US govt (all maturities)
-
     (0.00, 0),  # US govt (10+ years)
-
     (0.00, 0),  # US high credit corp bonds
-
     (0.00, 0),  # US high yield corp bonds
-
     (0.00, 0),  # US agency MBS
-
     (0.00, 0),  # US inflation-linked govt
-
     (0.00, 0),  # Global aggregate bonds
-
     (0.00, 0),  # Oil
     (0.00, 1),  # Gold
     (0.00, 1),  # Global infrastructure equity
-
     (0.00, 0),  # Infrastructure Debt
-
     (0.00, 0),  # Reals estate
     (0.00, 1),  # Pvt equity
     (0.00, 0.20),  # Hedge Funds
@@ -140,3 +124,4 @@ print(f"Expected return: {opt_return:.2%}")
 print(f"Volatility: {opt_vol:.2%}")
 
 print(f"Sharpe ratio: {sharpe:.2f}")
+
